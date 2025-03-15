@@ -27,11 +27,13 @@ const SwitchLight = () => {
     const newStatus = isOn ? 0 : 1;
     setIsOn(newStatus);
 
+    const message = newStatus ? "light_on" : "light_off";
+
     try {
       const res = await fetch(`${API_BASE_URL}/control-device`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 1, type: "light", status: newStatus })
+        body: JSON.stringify({ device_id: 1, type: "light", status: newStatus, message })
       });
       if (!res.ok) throw new Error("Failed to update light status");
       setTimeout(fetchLightStatus, 1000);
