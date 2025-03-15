@@ -22,7 +22,7 @@ const DesktopDashboard = () => {
           .catch((err) => console.error("Error fetching fan status:", err));
       }, []);
     
-      // Handle speed change
+  
       const handleSpeedChange = (event) => {
         const newSpeed = parseInt(event.target.value);
     
