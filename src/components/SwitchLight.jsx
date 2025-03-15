@@ -21,6 +21,7 @@ const SwitchLight = () => {
   // Toggle light function
   const toggleLight = () => {
     const newStatus = isOn ? 0 : 1;
+    setIsOn(newStatus); // Optimistically update UI
 
     fetch("https://f2f2-102-88-43-57.ngrok-free.app/control-device", {
       method: "POST",
@@ -28,10 +29,11 @@ const SwitchLight = () => {
       body: JSON.stringify({ device_id: 1, type: "light", status: newStatus }),
     })
       .then((res) => res.json())
-      .then(() => {
-        setTimeout(fetchLightStatus, 1000); // Wait a second before fetching new status
-      })
-      .catch((err) => console.error("Error toggling light:", err));
+      .then(() => setTimeout(fetchLightStatus, 1000)) // Verify actual status
+      .catch((err) => {
+        console.error("Error toggling light:", err);
+        setIsOn(!newStatus); // Revert UI if request fails
+      });
   };
 
   return (
