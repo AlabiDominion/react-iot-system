@@ -6,7 +6,7 @@ const MobileViewFan = () => {
 
   // Fetch the current fan speed from the backend
   useEffect(() => {
-    fetch("http://localhost:3000/device/2") // Replace '2' with your fan's device ID
+    fetch("http://localhost:3000/device/2") 
       .then((res) => res.json())
       .then((data) => setSpeed(data.status))
       .catch((err) => console.error("Error fetching fan status:", err));
