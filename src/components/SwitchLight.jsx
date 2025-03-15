@@ -5,7 +5,12 @@ const SwitchLight = () => {
 
   const fetchLightStatus = () => {
     fetch("https://fe3d-102-88-43-57.ngrok-free.app/device/1")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => setIsOn(data.status === 1))
       .catch((err) => console.error("Error fetching light status:", err));
   };
@@ -28,7 +33,12 @@ const SwitchLight = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ device_id: 1, type: "light", status: newStatus }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+        return res.json();
+      })
       .then(() => setTimeout(fetchLightStatus, 1000)) // Verify actual status
       .catch((err) => {
         console.error("Error toggling light:", err);
