@@ -16,7 +16,7 @@ const DesktopDashboard = () => {
 
       // Fetch the current fan speed from the backend
       useEffect(() => {
-        fetch("https://244a-102-88-43-57.ngrok-free.app/device/2") // Replace '2' with your fan's device ID
+        fetch("https://f2f2-102-88-43-57.ngrok-free.app/device/2") // Replace '2' with your fan's device ID
           .then((res) => res.json())
           .then((data) => setSpeed(data.status))
           .catch((err) => console.error("Error fetching fan status:", err));
@@ -26,7 +26,7 @@ const DesktopDashboard = () => {
       const handleSpeedChange = (event) => {
         const newSpeed = parseInt(event.target.value);
     
-        fetch("https://244a-102-88-43-57.ngrok-free.app/control-device", {
+        fetch("https://f2f2-102-88-43-57.ngrok-free.app/control-device", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ device_id: 2, type: "fan", status: newSpeed }),
