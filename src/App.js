@@ -12,11 +12,7 @@ import DesktopSignInPage from './pages/DesktopSignInPage';
 import DesktopSignupPage from './pages/DesktopSignupPage';
 import DesktopSettingsPage from './pages/DesktopSettingsPage';
 
-// Protected Route Component
-const ProtectedRoute = ({ element }) => {
-    const isAuthenticated = !!localStorage.getItem("token");
-    return isAuthenticated ? element : <Navigate to="/MobileSignInPage" />;
-};
+
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -60,8 +56,8 @@ function App() {
                                 <Route index element={<SignupEntry />} />
                                 <Route path='/SignupEntry' element={<SignupEntry />} />
                                 <Route path='/MobileSignInPage' element={<MobileSignInPage />} />
-                                <Route path='/MobileDashboard/*' element={<ProtectedRoute element={<MobileDashboard />} />} />
-                                <Route path='/MobileViewControlRoom' element={<ProtectedRoute element={<MobileViewControlRoom />} />} />
+                                <Route path='/MobileDashboard/*' element={<MobileDashboard />} />
+                                <Route path='/MobileViewControlRoom' element={<MobileViewControlRoom />} />
                                 <Route path='*' element={<Error404 />} />
                             </Routes>
                         </BrowserRouter>
@@ -73,8 +69,8 @@ function App() {
                                 <Route index element={<DesktopSignupPage />} />
                                 <Route path='/DesktopSignupPage' element={<DesktopSignupPage />} />
                                 <Route path='/DesktopSignInPage' element={<DesktopSignInPage />} />
-                                <Route path='/DesktopDashboard' element={<ProtectedRoute element={<DesktopDashboard />} />} />
-                                <Route path='/DesktopSettingsPage' element={<ProtectedRoute element={<DesktopSettingsPage />} />} />
+                                <Route path='/DesktopDashboard' element={<DesktopDashboard />} />
+                                <Route path='/DesktopSettingsPage' element={<DesktopSettingsPage />} />
                                 <Route path='*' element={<Error404 />} />
                             </Routes>
                         </BrowserRouter>
