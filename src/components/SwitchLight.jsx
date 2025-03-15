@@ -4,7 +4,7 @@ const SwitchLight = () => {
   const [isOn, setIsOn] = useState(false);
 
   const fetchLightStatus = () => {
-    fetch("https://f2f2-102-88-43-57.ngrok-free.app/device/1")
+    fetch("https://fe3d-102-88-43-57.ngrok-free.app/device/1")
       .then((res) => res.json())
       .then((data) => setIsOn(data.status === 1))
       .catch((err) => console.error("Error fetching light status:", err));
@@ -23,7 +23,7 @@ const SwitchLight = () => {
     const newStatus = isOn ? 0 : 1;
     setIsOn(newStatus); // Optimistically update UI
 
-    fetch("https://f2f2-102-88-43-57.ngrok-free.app/control-device", {
+    fetch("https://fe3d-102-88-43-57.ngrok-free.app/control-device", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ device_id: 1, type: "light", status: newStatus }),
