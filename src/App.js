@@ -12,35 +12,35 @@ import DesktopSignInPage from './pages/DesktopSignInPage';
 import DesktopSignupPage from './pages/DesktopSignupPage';
 import DesktopSettingsPage from './pages/DesktopSettingsPage';
 
+// Protected Route Component
+const ProtectedRoute = ({ element }) => {
+    const isAuthenticated = !!localStorage.getItem("token");
+    return isAuthenticated ? element : <Navigate to="/MobileSignInPage" />;
+};
+
 function App() {
-  
-    // State to track loading
     const [loading, setLoading] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
+
     useEffect(() => {
-        // Check if the screen size changes
         const handleResize = () => {
             setIsMobile(window.innerWidth < 768);
         };
-
         window.addEventListener("resize", handleResize);
 
-        // Hide loader after 3 seconds
         const timer = setTimeout(() => {
             setLoading(false);
         }, 3000);
-  
+
         return () => {
             clearTimeout(timer);
             window.removeEventListener("resize", handleResize);
-        } // Cleanup timer
+        };
     }, []);
-    
+
     return (
         <div>
             {loading ? (
-                // Loader
                 <div className="loaderPage">
                     <div className="pyramid-loader">
                         <div className="wrapper">
@@ -53,32 +53,28 @@ function App() {
                     </div>
                 </div>
             ) : (
-                // Main content after loader disappears
                 isMobile ? (
-                    // Mobile content
                     <div id="content">
                         <BrowserRouter>
                             <Routes>
                                 <Route index element={<SignupEntry />} />
                                 <Route path='/SignupEntry' element={<SignupEntry />} />
                                 <Route path='/MobileSignInPage' element={<MobileSignInPage />} />
-                                <Route path='/MobileDashboard/*' element={<MobileDashboard />} /> {/* ✅ MobileDashboard with nested routes */}
-                                <Route path='/MobileViewControlRoom' element={<MobileViewControlRoom />} />
+                                <Route path='/MobileDashboard/*' element={<ProtectedRoute element={<MobileDashboard />} />} />
+                                <Route path='/MobileViewControlRoom' element={<ProtectedRoute element={<MobileViewControlRoom />} />} />
                                 <Route path='*' element={<Error404 />} />
                             </Routes>
                         </BrowserRouter>
                     </div>
                 ) : (
-                    // Desktop content
                     <div id="desktop-content"> 
                         <BrowserRouter>
                             <Routes>
                                 <Route index element={<DesktopSignupPage />} />
                                 <Route path='/DesktopSignupPage' element={<DesktopSignupPage />} />
                                 <Route path='/DesktopSignInPage' element={<DesktopSignInPage />} />
-                                <Route path='/DesktopDashboard' element={<DesktopDashboard />} />
-                                <Route path='/DesktopSettingsPage' element={<DesktopSettingsPage />} />
-                                
+                                <Route path='/DesktopDashboard' element={<ProtectedRoute element={<DesktopDashboard />} />} />
+                                <Route path='/DesktopSettingsPage' element={<ProtectedRoute element={<DesktopSettingsPage />} />} />
                                 <Route path='*' element={<Error404 />} />
                             </Routes>
                         </BrowserRouter>
