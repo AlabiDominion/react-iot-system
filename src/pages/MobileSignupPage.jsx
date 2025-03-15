@@ -38,7 +38,7 @@ const SignupEntry = () => {
     const { verifyPassword, ...dataToSend } = formData;
 
     try {
-      const response = await fetch("/form", {
+      const response = await fetch("https://244a-102-88-43-57.ngrok-free.app/form", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
