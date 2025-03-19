@@ -4,7 +4,7 @@ const SwitchLight = () => {
   const [isOn, setIsOn] = useState(false);
 
   // Base URL for API requests (configurable)
-  const API_BASE_URL = "https://9b44-102-88-43-57.ngrok-free.app";
+  const API_BASE_URL = "api.auralinked.online";
 
   const fetchLightStatus = async () => {
     try {

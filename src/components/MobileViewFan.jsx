@@ -6,7 +6,7 @@ const MobileViewFan = () => {
 
   // Fetch the current fan speed from the backend
   useEffect(() => {
-    fetch("https://9b44-102-88-43-57.ngrok-free.app/device/2") 
+    fetch("api.auralinked.online/device/2") 
       .then((res) => res.json())
       .then((data) => setSpeed(data.status))
       .catch((err) => console.error("Error fetching fan status:", err));
@@ -16,7 +16,7 @@ const MobileViewFan = () => {
   const handleSpeedChange = (event) => {
     const newSpeed = parseInt(event.target.value);
 
-    fetch("https://9b44-102-88-43-57.ngrok-free.app/control-device", {
+    fetch("api.auralinked.online/control-device", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ device_id: 2, type: "fan", status: newSpeed }),
@@ -30,7 +30,7 @@ const MobileViewFan = () => {
   const handleSwitchClick = () => {
     setSpeed(0);
 
-    fetch("https://9b44-102-88-43-57.ngrok-free.app/control-device", {
+    fetch("api.auralinked.online/control-device", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ device_id: 2, type: "fan", status: 0 }),

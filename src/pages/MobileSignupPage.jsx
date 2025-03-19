@@ -38,7 +38,7 @@ const SignupEntry = () => {
     const { verifyPassword, ...dataToSend } = formData;
 
     try {
-      const response = await fetch("https://9b44-102-88-43-57.ngrok-free.app/signup", {
+      const response = await fetch("api.auralinked.online/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
