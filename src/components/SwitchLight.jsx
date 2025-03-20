@@ -46,7 +46,7 @@ const SwitchLight = () => {
   return (
     <div>
       <label>
-        <input type="checkbox" checked={isOn} onChange={toggleLight} />
+        <input className="l" type="checkbox" checked={isOn} onChange={toggleLight} />
         {isOn ? "Light ON" : "Light OFF"}
       </label>
     </div>
