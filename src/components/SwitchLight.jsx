@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 const SwitchLight = () => {
   const [isOn, setIsOn] = useState(false);
 
-  // Base URL for API requests (configurable)
+  // Base URL for API requests
   const API_BASE_URL = "https://api.auralinked.online";
 
+  // Fetch current light status from API
   const fetchLightStatus = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/device/1`);
@@ -23,30 +24,47 @@ const SwitchLight = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const toggleLight = async () => {
-    const newStatus = isOn ? 0 : 1;
-    setIsOn(newStatus);
-
-    const message = newStatus ? "light_on" : "light_off";
-
+  // Function to turn the light ON
+  const handleLightOn = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/control-device`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 1, type: "light", status: newStatus, message })
+        body: JSON.stringify({ device_id: 1, type: "light", status: 1, message: "light_on" })
       });
-      if (!res.ok) throw new Error("Failed to update light status");
+      if (!res.ok) throw new Error("Failed to turn on light");
+      setIsOn(true);
       setTimeout(fetchLightStatus, 1000);
     } catch (err) {
-      console.error("Error toggling light:", err);
-      setIsOn(!newStatus);
+      console.error("Error turning on light:", err);
+    }
+  };
+
+  // Function to turn the light OFF
+  const handleLightOff = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/control-device`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ device_id: 1, type: "light", status: 0, message: "light_off" })
+      });
+      if (!res.ok) throw new Error("Failed to turn off light");
+      setIsOn(false);
+      setTimeout(fetchLightStatus, 1000);
+    } catch (err) {
+      console.error("Error turning off light:", err);
     }
   };
 
   return (
     <div>
       <label>
-        <input className="l" type="checkbox" checked={isOn} onChange={toggleLight} />
+        <input
+          className="l"
+          type="checkbox"
+          checked={isOn}
+          onChange={isOn ? handleLightOff : handleLightOn}
+        />
         {isOn ? "Light ON" : "Light OFF"}
       </label>
     </div>
