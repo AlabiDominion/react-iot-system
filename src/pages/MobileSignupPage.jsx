@@ -38,7 +38,7 @@ const SignupEntry = () => {
     const { verifyPassword, ...dataToSend } = formData;
 
     try {
-      const response = await fetch("api.auralinked.online/signup", {
+      const response = await fetch("https://api.auralinked.online/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

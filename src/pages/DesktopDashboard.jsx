@@ -16,7 +16,7 @@ const DesktopDashboard = () => {
 
       // Fetch the current fan speed from the backend
       useEffect(() => {
-        fetch("api.auralinked.online/device/2") // Replace '2' with your fan's device ID
+        fetch("https://api.auralinked.online/device/2") // Replace '2' with your fan's device ID
           .then((res) => res.json())
           .then((data) => setSpeed(data.status))
           .catch((err) => console.error("Error fetching fan status:", err));
@@ -26,7 +26,7 @@ const DesktopDashboard = () => {
       const handleSpeedChange = (event) => {
         const newSpeed = parseInt(event.target.value);
     
-        fetch("api.auralinked.online/control-device", {
+        fetch("https://api.auralinked.online/control-device", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ device_id: 2, type: "fan", status: newSpeed }),

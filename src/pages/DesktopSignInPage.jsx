@@ -32,7 +32,7 @@ const DesktopSignInPage = () => {
       }
   
       try {
-        const response = await fetch("api.auralinked.online/login", {
+        const response = await fetch("https://api.auralinked.online/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

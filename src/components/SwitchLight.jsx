@@ -4,7 +4,7 @@ const SwitchLight = () => {
   const [isOn, setIsOn] = useState(false);
 
   // Base URL for API requests (configurable)
-  const API_BASE_URL = "api.auralinked.online";
+  const API_BASE_URL = "https://api.auralinked.online";
 
   const fetchLightStatus = async () => {
     try {
