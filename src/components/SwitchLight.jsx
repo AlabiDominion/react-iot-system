@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 
 const SwitchLight = () => {
   const [isOn, setIsOn] = useState(false);
-
-  // Base URL for API requests
   const API_BASE_URL = "https://api.auralinked.online";
 
   // Fetch current light status from API
@@ -57,16 +55,20 @@ const SwitchLight = () => {
   };
 
   return (
-    <div>
-      <label>
-        <input
-          className="l"
-          type="checkbox"
-          checked={isOn}
-          onChange={isOn ? handleLightOff : handleLightOn}
-        />
-        {isOn ? "Light ON" : "Light OFF"}
-      </label>
+    <div className="SwitchLight">
+      <div>
+        <img src="/sun.png" alt="LightLogo" />
+        <p>Status: {isOn ? "ON" : "OFF"}</p>
+      </div>
+      <div>
+        <button onClick={handleLightOn} disabled={isOn}>
+          Turn ON
+        </button>
+        <button onClick={handleLightOff} disabled={!isOn}>
+          Turn OFF
+        </button>
+      </div>
+      
     </div>
   );
 };

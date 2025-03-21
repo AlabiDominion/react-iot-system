@@ -74,13 +74,10 @@ const DesktopDashboard = () => {
               </div> 
             </div>
             <div className="minicard">
-              <div className="minicard2">
-                <img src="./sun.png" alt="fan"/>
+              <div>
                 <SwitchLight/>
               </div>
               <h2>Lamp</h2>
-              
-              
             </div>
           
           </div>

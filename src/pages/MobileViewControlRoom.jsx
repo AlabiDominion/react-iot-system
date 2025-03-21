@@ -32,7 +32,6 @@ const MobileViewControlRoom = () => {
             {/* Light Control */}
             <div className="Mcard">
               <div className="Mcard1">
-                <img src="/sun.png" alt="LightLogo" />
                 <div className="switchlight">
                   <SwitchLight />
                 </div>
