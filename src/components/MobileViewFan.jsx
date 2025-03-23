@@ -13,7 +13,7 @@ const MobileViewFan = () => {
     fetch(`${API_BASE_URL}/control-device`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ device_id: 2, type: "fan", message }),
+      body: JSON.stringify({ device_id: 1, type: "fan", message }),
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to send speed change command");
@@ -29,7 +29,7 @@ const MobileViewFan = () => {
     fetch(`${API_BASE_URL}/control-device`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ device_id: 2, type: "fan", message }),
+      body: JSON.stringify({ device_id: 1, type: "fan", message }),
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to send turn-off command");

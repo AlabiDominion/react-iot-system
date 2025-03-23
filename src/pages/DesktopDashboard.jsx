@@ -39,7 +39,7 @@ const DesktopDashboard = () => {
       const res = await fetch(`${API_BASE_URL}/control-device`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 2, type: "fan", message }),
+        body: JSON.stringify({ device_id: 1, type: "fan", message }),
       });
 
       if (!res.ok) {
