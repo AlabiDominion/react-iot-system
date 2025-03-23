@@ -22,35 +22,24 @@ const SwitchLight = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Function to turn the light ON
-  const handleLightOn = async () => {
+  // Function to update light status
+  const updateLightStatus = async (status, message) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/control-device`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 1, type: "light", status: 1, message: "light_on" })
-      });
-      if (!res.ok) throw new Error("Failed to turn on light");
-      setIsOn(true);
-      setTimeout(fetchLightStatus, 1000);
-    } catch (err) {
-      console.error("Error turning on light:", err);
-    }
-  };
+      // Update UI immediately
+      setIsOn(status === 1);
 
-  // Function to turn the light OFF
-  const handleLightOff = async () => {
-    try {
       const res = await fetch(`${API_BASE_URL}/control-device`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 1, type: "light", status: 0, message: "light_off" })
+        body: JSON.stringify({ device_id: 1, type: "light", status, message }),
       });
-      if (!res.ok) throw new Error("Failed to turn off light");
-      setIsOn(false);
+
+      if (!res.ok) throw new Error(`Failed to turn ${status ? "on" : "off"} light`);
+      
+      // Optional: Fetch latest status after a delay to ensure sync
       setTimeout(fetchLightStatus, 1000);
     } catch (err) {
-      console.error("Error turning off light:", err);
+      console.error(`Error turning ${status ? "on" : "off"} light:`, err);
     }
   };
 
@@ -61,14 +50,13 @@ const SwitchLight = () => {
         <p>Status: {isOn ? "ON" : "OFF"}</p>
       </div>
       <div>
-        <button onClick={handleLightOn} disabled={isOn}>
+        <button onClick={() => updateLightStatus(1, "light_on")}>
           Turn ON
         </button>
-        <button onClick={handleLightOff} disabled={!isOn}>
+        <button onClick={() => updateLightStatus(0, "light_off")}>
           Turn OFF
         </button>
       </div>
-      
     </div>
   );
 };
