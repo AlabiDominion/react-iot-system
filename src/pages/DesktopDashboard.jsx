@@ -6,16 +6,28 @@ const DesktopDashboard = () => {
   const API_BASE_URL = "https://api.auralinked.online";
   const [speed, setSpeed] = useState(0);
 
-  // Fetch fan speed from the backend
+  // Fetch fan speed (message) from the backend
   useEffect(() => {
-    fetch(`${API_BASE_URL}/device/2`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && data.status !== undefined) {
-          setSpeed(data.status);
+    const fetchFanSpeed = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/device/2`);
+        if (!res.ok) throw new Error(`Error fetching fan data: ${res.statusText}`);
+
+        const data = await res.json();
+        if (data?.message) {
+          const match = data.message.match(/fan_speed_(\d+)/); // Extract speed from message
+          if (match) {
+            setSpeed(parseInt(match[1], 10));
+          }
+        } else {
+          console.warn("No valid fan speed message received.");
         }
-      })
-      .catch((err) => console.error("Error fetching fan speed:", err));
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    fetchFanSpeed();
   }, []);
 
   // Function to update fan speed
@@ -30,10 +42,14 @@ const DesktopDashboard = () => {
         body: JSON.stringify({ device_id: 2, type: "fan", message }),
       });
 
-      if (!res.ok) throw new Error("Failed to send fan speed command");
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to send fan speed command: ${errorText}`);
+      }
+
       setSpeed(newSpeed); // Update UI immediately
     } catch (err) {
-      console.error("Error setting fan speed:", err);
+      console.error(err.message);
     }
   };
 
@@ -49,7 +65,7 @@ const DesktopDashboard = () => {
       <div className="DesktopDashboardBody">
         <div className="DesktopDashboardBody1">
           <img src="/cuate.png" alt="home" />
-          <h1 className="user">welcome</h1>
+          <h1 className="user">Welcome</h1>
           <p>Ready to take smart control over your home?!</p>
         </div>
 
