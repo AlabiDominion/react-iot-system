@@ -22,24 +22,18 @@ const SwitchLight = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Function to update light status
-  const updateLightStatus = async (status, message) => {
+  // Function to send light control command
+  const handleLightControl = async (status, message) => {
     try {
-      // Update UI immediately
-      setIsOn(status === 1);
-
       const res = await fetch(`${API_BASE_URL}/control-device`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 1, type: "light", status, message }),
+        body: JSON.stringify({ device_id: 1, type: "light", status, message })
       });
-
-      if (!res.ok) throw new Error(`Failed to turn ${status ? "on" : "off"} light`);
-      
-      // Optional: Fetch latest status after a delay to ensure sync
-      setTimeout(fetchLightStatus, 1000);
+      if (!res.ok) throw new Error(`Failed to send ${message} command`);
+      setIsOn(status === 1);
     } catch (err) {
-      console.error(`Error turning ${status ? "on" : "off"} light:`, err);
+      console.error(`Error sending ${message} command:`, err);
     }
   };
 
@@ -50,12 +44,8 @@ const SwitchLight = () => {
         <p>Status: {isOn ? "ON" : "OFF"}</p>
       </div>
       <div>
-        <button onClick={() => updateLightStatus(1, "light_on")}>
-          Turn ON
-        </button>
-        <button onClick={() => updateLightStatus(0, "light_off")}>
-          Turn OFF
-        </button>
+        <button onClick={() => handleLightControl(1, "light_on")}>Turn ON</button>
+        <button onClick={() => handleLightControl(0, "light_off")}>Turn OFF</button>
       </div>
     </div>
   );
