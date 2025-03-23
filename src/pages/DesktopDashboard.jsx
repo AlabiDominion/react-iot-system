@@ -14,7 +14,7 @@ const DesktopDashboard = () => {
         if (!res.ok) throw new Error(`Error fetching fan data: ${res.statusText}`);
 
         const data = await res.json();
-        if (data?.message) {
+        if (data?.type === "fan" && data?.message) {
           const match = data.message.match(/fan_speed_(\d+)/); // Extract speed from message
           if (match) {
             setSpeed(parseInt(match[1], 10));
