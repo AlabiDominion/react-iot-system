@@ -1,37 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const SwitchLight = () => {
   const [isOn, setIsOn] = useState(false);
   const API_BASE_URL = "https://api.auralinked.online";
 
-  // Fetch current light status from API
-  const fetchLightStatus = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/device/1`);
-      if (!res.ok) throw new Error("Failed to fetch light status");
-      const data = await res.json();
-      setIsOn(data.status === 1);
-    } catch (err) {
-      console.error("Error fetching light status:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchLightStatus();
-    const interval = setInterval(fetchLightStatus, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
   // Function to send light control command
-  const handleLightControl = async (status, message) => {
+  const handleLightControl = async (message) => {
     try {
       const res = await fetch(`${API_BASE_URL}/control-device`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ device_id: 1, type: "light", status, message })
+        body: JSON.stringify({ device_id: 1, type: "light", message })
       });
       if (!res.ok) throw new Error(`Failed to send ${message} command`);
-      setIsOn(status === 1);
+      setIsOn(message === "light_on"); // Update UI based on action
     } catch (err) {
       console.error(`Error sending ${message} command:`, err);
     }
@@ -44,8 +26,8 @@ const SwitchLight = () => {
         <p>Status: {isOn ? "ON" : "OFF"}</p>
       </div>
       <div>
-        <button onClick={() => handleLightControl(1, "light_on")}>Turn ON</button>
-        <button onClick={() => handleLightControl(0, "light_off")}>Turn OFF</button>
+        <button onClick={() => handleLightControl("light_on")}>Turn ON</button>
+        <button onClick={() => handleLightControl("light_off")}>Turn OFF</button>
       </div>
     </div>
   );
