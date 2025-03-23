@@ -10,7 +10,7 @@ const DesktopDashboard = () => {
   useEffect(() => {
     const fetchFanSpeed = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/device/2`);
+        const res = await fetch(`${API_BASE_URL}/device/1`);
         if (!res.ok) throw new Error(`Error fetching fan data: ${res.statusText}`);
 
         const data = await res.json();
