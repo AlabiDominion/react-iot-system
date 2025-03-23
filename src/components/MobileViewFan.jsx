@@ -1,40 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SwitchFan from "./SwitchFan";
 
 const MobileViewFan = () => {
   const [speed, setSpeed] = useState(0);
-
-  // Fetch the current fan speed from the backend
-  useEffect(() => {
-    fetch("https://api.auralinked.online/device/2") 
-      .then((res) => res.json())
-      .then((data) => setSpeed(data.status))
-      .catch((err) => console.error("Error fetching fan status:", err));
-  }, []);
+  const API_BASE_URL = "https://api.auralinked.online";
 
   // Handle speed change
   const handleSpeedChange = (event) => {
     const newSpeed = parseInt(event.target.value);
+    const message = `fan_speed_${newSpeed}`;
 
-    fetch("https://api.auralinked.online/control-device", {
+    fetch(`${API_BASE_URL}/control-device`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ device_id: 2, type: "fan", status: newSpeed }),
+      body: JSON.stringify({ device_id: 2, type: "fan", message }),
     })
-      .then((res) => res.json())
-      .then(() => setSpeed(newSpeed))
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to send speed change command");
+        setSpeed(newSpeed); // Update UI immediately
+      })
       .catch((err) => console.error("Error setting fan speed:", err));
   };
 
   // Turn off fan when switch is clicked
   const handleSwitchClick = () => {
-    setSpeed(0);
+    const message = "fan_speed_0";
 
-    fetch("https://api.auralinked.online/control-device", {
+    fetch(`${API_BASE_URL}/control-device`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ device_id: 2, type: "fan", status: 0 }),
-    }).catch((err) => console.error("Error turning off fan:", err));
+      body: JSON.stringify({ device_id: 2, type: "fan", message }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to send turn-off command");
+        setSpeed(0); // Update UI immediately
+      })
+      .catch((err) => console.error("Error turning off fan:", err));
   };
 
   return (
